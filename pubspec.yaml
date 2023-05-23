@@ -33,6 +33,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.8.2
+  flutter_slidable: ^3.0.0
   get: ^4.6.5
   google_fonts: ^4.0.4
   shimmer: ^3.0.0

@@ -8,7 +8,8 @@ import 'package:todo_app/utils/reusable_widgets.dart';
 
 class TodoController extends GetxController {
   RxList<TodoModel> toDoList = <TodoModel>[].obs;
-
+  RxList<TodoModel> toDoListDone = <TodoModel>[].obs;
+  RxList<TodoModel> toDoListnotDone = <TodoModel>[].obs;
   TextEditingController textController = TextEditingController();
   RxBool isLoading = false.obs;
   final formKey = GlobalKey<FormState>();
@@ -17,6 +18,15 @@ class TodoController extends GetxController {
     final response = await TodoService().getTodos();
     if (response != null) {
       toDoList((response as List).map((e) => TodoModel.fromJson(e)).toList());
+      toDoListDone.clear();
+      toDoListnotDone.clear();
+      for (var element in toDoList) {
+        if (element.isCompleted == true) {
+          toDoListDone.add(element);
+        } else {
+          toDoListnotDone.add(element);
+        }
+      }
     } else {
       log('response is null');
     }
@@ -76,11 +86,18 @@ class TodoController extends GetxController {
   todoComplete(int id, String title) async {
     final response = await TodoService().todoComplete(id);
     if (response.statusCode == 200) {
-      log(
-        response.data.toString(),
-      );
+      log(response.data.toString());
       Get.snackbar('Done', '$title is completed');
+      getTodo();
     }
-    getTodo();
+  }
+
+  deleteTodo(int id, String title) async {
+    final response = await TodoService().deleteTodos(id);
+    if (response.statusCode == 200) {
+      log(response.data.toString());
+      Get.snackbar('Done', '$title is deleted Successfully');
+      getTodo();
+    }
   }
 }

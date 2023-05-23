@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/controller/todo_controller.dart';
 import 'package:todo_app/utils/constants.dart';
@@ -27,14 +28,12 @@ class HomePage extends StatelessWidget {
                     reusableText(
                         StringConstants.todoList, robotoText(fontsize: 20)),
                     controller.isLoading.isTrue
-                        ? Container(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: 5,
-                              itemBuilder: (context, index) => Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ShimmerWidgets().listSize(),
-                              ),
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 5,
+                            itemBuilder: (context, index) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ShimmerWidgets().listSize(),
                             ),
                           )
                         : controller.toDoList.isEmpty
@@ -46,10 +45,26 @@ class HomePage extends StatelessWidget {
                                 itemCount: controller.toDoList.length,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) => Dismissible(
-                                  key: ValueKey(controller.toDoList[index]),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                itemBuilder: (context, index) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Slidable(
+                                    startActionPane: ActionPane(
+                                        motion: const ScrollMotion(),
+                                        children: [
+                                          SlidableAction(
+                                            onPressed: (context) {
+                                              controller.deleteTodo(
+                                                  controller
+                                                      .toDoList[index].id!,
+                                                  controller
+                                                      .toDoList[index].title!);
+                                            },
+                                            backgroundColor:
+                                                Colors.purpleAccent,
+                                            icon: Icons.delete,
+                                            label: 'delete',
+                                          )
+                                        ]),
                                     child: customContainer(
                                         height: 70.sp,
                                         width: double.infinity,
@@ -75,7 +90,14 @@ class HomePage extends StatelessWidget {
                                                             : TextDecoration
                                                                 .none,
                                                         decorationColor:
-                                                            Colors.white)),
+                                                            Colors.white,
+                                                        color: controller
+                                                                    .toDoList[
+                                                                        index]
+                                                                    .isCompleted ==
+                                                                true
+                                                            ? Colors.grey
+                                                            : Colors.white)),
                                               ),
                                               Expanded(
                                                 flex: 1,
@@ -102,7 +124,7 @@ class HomePage extends StatelessWidget {
                                                                         index]
                                                                     .isCompleted ==
                                                                 true
-                                                            ? Colors.greenAccent
+                                                            ? Colors.transparent
                                                             : Colors.white,
                                                         size: 30)),
                                               )

@@ -62,4 +62,17 @@ affected_rows
   }
 }
 ''';
+  static const deleteTodo = '''
+mutation deleteTask(\$id: Int!) {
+  delete_todos(where: {id: {_eq: \$id}}){
+    affected_rows
+    returning{
+      id
+      title
+      
+    }
+  }
+}
+
+''';
 }
