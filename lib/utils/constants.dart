@@ -49,4 +49,17 @@ mutation addTodo(\$title: String!) {
   }
 }
 ''';
+  static const update = '''
+mutation update(\$id: Int!) {
+  update_todos(where: {id: {_eq: \$id}}, _set: {is_completed: true}){
+affected_rows
+    returning{
+      title
+      created_at
+      id
+      is_completed
+    }
+  }
+}
+''';
 }

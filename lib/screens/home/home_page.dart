@@ -37,44 +37,81 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                           )
-                        : ListView.builder(
-                            itemCount: controller.toDoList.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) => Dismissible(
-                              key: ValueKey(controller.toDoList[index]),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: customContainer(
-                                    height: 70.sp,
-                                    width: double.infinity,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Expanded(
-                                            flex: 8,
-                                            child: reusableText(
-                                                controller
-                                                    .toDoList[index].title!,
-                                                robotoText()),
+                        : controller.toDoList.isEmpty
+                            ? Center(
+                                child:
+                                    reusableText('List is Empty', robotoText()),
+                              )
+                            : ListView.builder(
+                                itemCount: controller.toDoList.length,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) => Dismissible(
+                                  key: ValueKey(controller.toDoList[index]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: customContainer(
+                                        height: 70.sp,
+                                        width: double.infinity,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Expanded(
+                                                flex: 8,
+                                                child: reusableText(
+                                                    controller
+                                                        .toDoList[index].title!,
+                                                    robotoText().copyWith(
+                                                        decoration: controller
+                                                                    .toDoList[
+                                                                        index]
+                                                                    .isCompleted ==
+                                                                true
+                                                            ? TextDecoration
+                                                                .lineThrough
+                                                            : TextDecoration
+                                                                .none,
+                                                        decorationColor:
+                                                            Colors.white)),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: IconButton(
+                                                    onPressed: controller
+                                                                .toDoList[index]
+                                                                .isCompleted ==
+                                                            true
+                                                        ? null
+                                                        : () {
+                                                            controller.todoComplete(
+                                                                controller
+                                                                    .toDoList[
+                                                                        index]
+                                                                    .id!,
+                                                                controller
+                                                                    .toDoList[
+                                                                        index]
+                                                                    .title!);
+                                                          },
+                                                    icon: Icon(Icons.done,
+                                                        color: controller
+                                                                    .toDoList[
+                                                                        index]
+                                                                    .isCompleted ==
+                                                                true
+                                                            ? Colors.greenAccent
+                                                            : Colors.white,
+                                                        size: 30)),
+                                              )
+                                            ],
                                           ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: IconButton(
-                                                onPressed: () {},
-                                                icon: const Icon(Icons.done,
-                                                    color: Colors.white,
-                                                    size: 30)),
-                                          )
-                                        ],
-                                      ),
-                                    )),
-                              ),
-                            ),
-                          )
+                                        )),
+                                  ),
+                                ),
+                              )
                   ],
                 ),
               ),

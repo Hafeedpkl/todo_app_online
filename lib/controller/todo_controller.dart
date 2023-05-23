@@ -8,6 +8,7 @@ import 'package:todo_app/utils/reusable_widgets.dart';
 
 class TodoController extends GetxController {
   RxList<TodoModel> toDoList = <TodoModel>[].obs;
+
   TextEditingController textController = TextEditingController();
   RxBool isLoading = false.obs;
   final formKey = GlobalKey<FormState>();
@@ -70,5 +71,16 @@ class TodoController extends GetxController {
       log('controller is empty');
     }
     textController.clear();
+  }
+
+  todoComplete(int id, String title) async {
+    final response = await TodoService().todoComplete(id);
+    if (response.statusCode == 200) {
+      log(
+        response.data.toString(),
+      );
+      Get.snackbar('Done', '$title is completed');
+    }
+    getTodo();
   }
 }

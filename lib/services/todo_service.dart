@@ -32,16 +32,30 @@ class TodoService {
   }
 
   addTodos(String todo) async {
-    log('addTodos');
     try {
       dio.Response response = await graphqlClient.post('', data: {
         "query": Queries.addTodo,
         "variables": {"title": todo}
       });
       if (response.statusCode == 200) {
-        // log(response.data.toString());
-
         return response.data;
+      } else {
+        return null;
+      }
+    } on dio.DioError catch (e) {
+      log(e.message.toString());
+    }
+    return null;
+  }
+
+  todoComplete(int id) async {
+    try {
+      dio.Response response = await graphqlClient.post('', data: {
+        "query": Queries.update,
+        "variables": {"id": id}
+      });
+      if (response.statusCode == 200) {
+        return response;
       } else {
         return null;
       }
