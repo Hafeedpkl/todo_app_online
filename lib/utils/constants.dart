@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:todo_app/screens/home_page.dart';
+
+class StringConstants {
+  static const String homePage = '/homepage';
+  static const String todoList = 'TODO LIST';
+}
+
+class ApiConstants {
+  static const String baseUrl = 'https://trusted-dog-33.hasura.app/v1/graphql';
+}
+
+class Routes {
+  static List<GetPage> getPageList = [
+    GetPage(
+      name: StringConstants.homePage,
+      page: () => const HomePage(),
+    )
+  ];
+}
+
+class ColorConstants {
+  static MaterialColor primarySwatch = Colors.purple;
+  static Color primaryColor = const Color(0xFF303F9F);
+  static const Color containerColor = Color.fromARGB(255, 8, 3, 73);
+}
+
+class Queries {
+  static const getTodo = '''
+query getTodo {
+  todos {
+    id
+    title
+    is_completed
+  }
+}
+
+''';
+}
