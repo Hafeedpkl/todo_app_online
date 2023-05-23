@@ -15,7 +15,6 @@ class HomePage extends StatelessWidget {
 
     return Obx(() => Scaffold(
           backgroundColor: ColorConstants.primaryColor,
-        
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: SafeArea(
@@ -82,7 +81,9 @@ class HomePage extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              controller.showDialogueBox();
+            },
             backgroundColor: Colors.purpleAccent,
             shape: const CircleBorder(),
             child: const Icon(

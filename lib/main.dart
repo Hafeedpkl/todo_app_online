@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:todo_app/controller/bindings/home_binding.dart';
 import 'package:todo_app/utils/constants.dart';
 
 void main(List<String> args) {
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
             primarySwatch: ColorConstants.primarySwatch,
             primaryColor: ColorConstants.primaryColor),
         getPages: Routes.getPageList,
-        initialRoute: StringConstants.homePage,
+        initialRoute: '/homepage',
+        initialBinding: HomePageBinding(),
       );
     });
   }

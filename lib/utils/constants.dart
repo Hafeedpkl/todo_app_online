@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/screens/home_page.dart';
+import 'package:todo_app/screens/home/home_page.dart';
 
 class StringConstants {
   static const String homePage = '/homepage';
@@ -36,5 +36,17 @@ query getTodo {
   }
 }
 
+''';
+  static const addTodo = '''
+mutation addTodo(\$title: String!) {
+  insert_todos(objects: {title: \$title,user_id:"1"}) {
+    affected_rows
+    returning {
+      title
+      user_id
+      
+    }
+  }
+}
 ''';
 }
