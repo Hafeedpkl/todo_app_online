@@ -43,8 +43,8 @@ class HomePage extends StatelessWidget {
                                     reusableText('List is Empty', robotoText()),
                               )
                             : listSection(
-                                controller, controller.toDoListnotDone),
-                    listSection(controller, controller.toDoListDone)
+                                controller, controller.toDoListnotDone, false),
+                    listSection(controller, controller.toDoListDone, true)
                   ],
                 ),
               ),
@@ -64,7 +64,8 @@ class HomePage extends StatelessWidget {
         ));
   }
 
-  ListView listSection(TodoController controller, List<TodoModel> list) {
+  ListView listSection(
+      TodoController controller, List<TodoModel> list, bool isCompleted) {
     return ListView.builder(
       itemCount: list.length,
       shrinkWrap: true,
@@ -75,7 +76,8 @@ class HomePage extends StatelessWidget {
           startActionPane: ActionPane(motion: const ScrollMotion(), children: [
             SlidableAction(
               onPressed: (context) {
-                controller.deleteTodo(list[index].id!, list[index].title!);
+                controller.deleteTodo(
+                    list[index].id!, list[index].title!, index, isCompleted);
               },
               backgroundColor: Colors.purpleAccent,
               icon: Icons.delete,
@@ -95,13 +97,11 @@ class HomePage extends StatelessWidget {
                       child: reusableText(
                           list[index].title!,
                           robotoText().copyWith(
-                              decoration: list[index].isCompleted == true
+                              decoration: isCompleted
                                   ? TextDecoration.lineThrough
                                   : TextDecoration.none,
                               decorationColor: Colors.white,
-                              color: list[index].isCompleted == true
-                                  ? Colors.grey
-                                  : Colors.white)),
+                              color: isCompleted ? Colors.grey : Colors.white)),
                     ),
                     Expanded(
                       flex: 1,
@@ -109,8 +109,8 @@ class HomePage extends StatelessWidget {
                           onPressed: list[index].isCompleted == true
                               ? null
                               : () {
-                                  controller.todoComplete(
-                                      list[index].id!, list[index].title!);
+                                  controller.todoComplete(list[index].id!,
+                                      list[index].title!, index);
                                 },
                           icon: Icon(Icons.done,
                               color: list[index].isCompleted == true

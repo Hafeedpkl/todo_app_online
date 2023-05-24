@@ -75,29 +75,38 @@ class TodoController extends GetxController {
   addTodo() async {
     if (textController.text.isNotEmpty) {
       final response = await TodoService().addTodos(textController.text);
+      final id = response['data']['insert_todos']['returning'][0]['id'];
+
       log(response.toString());
-      getTodo();
+      toDoListnotDone.insert(
+          0, TodoModel(title: textController.text, id: id, isCompleted: false));
     } else {
       log('controller is empty');
     }
     textController.clear();
   }
 
-  todoComplete(int id, String title) async {
+  todoComplete(int id, String title, int index) async {
     final response = await TodoService().todoComplete(id);
     if (response.statusCode == 200) {
       log(response.data.toString());
+      toDoListnotDone.removeAt(index);
+      toDoListDone.insert(
+          0, TodoModel(title: title, id: id, isCompleted: true));
       Get.snackbar('Done', '$title is completed');
-      getTodo();
+    } else {
+      return null;
     }
   }
 
-  deleteTodo(int id, String title) async {
+  deleteTodo(int id, String title, int index, bool isCompleted) async {
     final response = await TodoService().deleteTodos(id);
     if (response.statusCode == 200) {
       log(response.data.toString());
+      isCompleted
+          ? toDoListDone.removeAt(index)
+          : toDoListnotDone.removeAt(index);
       Get.snackbar('Done', '$title is deleted Successfully');
-      getTodo();
     }
   }
 }

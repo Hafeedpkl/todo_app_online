@@ -29,7 +29,7 @@ class ColorConstants {
 class Queries {
   static const getTodo = '''
 query getTodo {
-  todos {
+  todos(order_by: {is_completed: asc , id: desc}) {
     id
     title
     is_completed
@@ -42,6 +42,7 @@ mutation addTodo(\$title: String!) {
   insert_todos(objects: {title: \$title,user_id:"1"}) {
     affected_rows
     returning {
+      id
       title
       user_id
       
